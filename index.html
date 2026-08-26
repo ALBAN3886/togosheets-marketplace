@@ -280,7 +280,7 @@ window._currentCat = 'all';
 // ── Charge toutes les boutiques ──
 async function loadShops(){
   try {
-    const snap = await getDocs(collection(db, 'commerce_data'));
+    const snap = await getDocs(collection(db, 'public_shops'));
     const shops = [];
     let totalProducts = 0;
     const cities = new Set();
@@ -309,8 +309,8 @@ async function loadShops(){
           country:   shop.country || 'Togo',
           addr:      shop.addr || '',
           logo:      shop.logoUrl || (shop.branding && shop.branding.logoUrl) || '',
-          banner:    (shop.branding && shop.branding.bgUrl) || '',
-          slogan:    (shop.branding && shop.branding.slogan) || '',
+          banner:    shop.bgUrl || (shop.branding && shop.branding.bgUrl) || '',
+          slogan:    shop.slogan || (shop.branding && shop.branding.slogan) || '',
           articles,
           createdAt: shop.createdAt || 0,
           isNew:     (Date.now() - (shop.createdAt||0)) < 7*24*3600*1000
