@@ -327,7 +327,7 @@ async function loadShops(){
   } catch(e){
     console.error(e);
     document.getElementById('shopsGrid').innerHTML =
-      '<div class="empty" style="grid-column:1/-1"><i class="fas fa-wifi-slash"></i><p>Erreur de chargement. Vérifiez votre connexion.</p></div>';
+      '<div class="empty" style="grid-column:1/-1"><i class="fas fa-wifi-slash"></i><p>DEBUG: ' + (e && e.message ? e.message : String(e)) + '</p></div>';
   }
 }
 
