@@ -1,32 +1,31 @@
-# TogoSheets Marketplace — site public
+# TogoSheets Marketplace — vitrine publique
 
-⚠️ Ce dépôt est le **vrai site en ligne** que les visiteurs utilisent
-directement (https://alban3886.github.io/togosheets-marketplace/) —
-ce n'est pas un prototype abandonné, contrairement à ce qu'on pensait
-au départ.
+⚠️ **Ce dépôt est une copie automatique de `togosheets-pro`. Ne pas modifier ses fichiers ici.**
 
-## Ce qui a été corrigé (session du 2026-09-15)
-- `index.html` était désynchronisé de la version de référence
-  (`togosheets-pro/public.html`) : il manquait l'appel à
-  `window.buildAllProducts()`, ce qui faisait que la page d'accueil
-  affichait toujours "Aucun article trouvé" même quand des boutiques
-  avaient des produits. Corrigé.
-- Le paiement Pi Network a été retiré entièrement (SDK, bouton de
-  test, drawer de paiement Pi dans la boutique) — remplacé par les
-  options déjà existantes : Cash, Flooz, Wave.
-- `boutique.html` et `employe.html` (+ leurs fichiers nécessaires :
-  `manifest-employe.json`, `sw-employe.js`, `icon-192.png`,
-  `icon-512.png`) ont été copiés depuis `togosheets-pro` : avant,
-  cliquer sur une boutique depuis ce site donnait une erreur 404
-  car ces pages n'existaient que dans l'autre dépôt.
+Source unique : https://github.com/alban3886/togosheets-pro
+Un workflow GitHub Actions (dans togosheets-pro) recopie à chaque push :
 
-## ⚠️ Important : deux copies, une seule vérité
-`togosheets-pro` et ce dépôt contiennent maintenant chacun leur
-propre copie de `boutique.html` et `employe.html`. **Ce ne sont pas
-des fichiers liés automatiquement** : si tu modifies l'un, il faut
-recopier le changement dans l'autre à la main, sinon ils vont
-diverger à nouveau exactement comme avant.
+| togosheets-pro          | ->  | togosheets-marketplace |
+|-------------------------|-----|------------------------|
+| `public.html`           | ->  | `index.html` (liens "index.html" réécrits vers l'URL absolue de pro) |
+| `boutique.html`, `employe.html`, `manifest-employe.json`, `sw-employe.js`, `icon-*.png` | -> | idem |
+| `images/`               | ->  | `images/` |
 
-La solution durable serait de choisir UN SEUL site officiel et de
-faire pointer l'app Android + tous les liens partagés vers celui-là
-uniquement, pour ne plus avoir à synchroniser deux copies. À décider.
+Restent propres à ce dépôt : `404.html`, `validation-key.txt`, `netlify/functions/`.
+
+Les boutiques et produits ne sont pas copiés : la page lit la collection Firestore
+`public_shops` du même projet que togosheets-pro.
+
+## Les liens du projet
+| Rôle | URL | Fichier |
+|------|-----|---------|
+| Vitrine (toutes les boutiques) | `/togosheets-marketplace/` | `index.html` |
+| Boutique d'un vendeur | `/togosheets-marketplace/boutique.html?tenant=...` | `boutique.html` |
+| Lien court d'une boutique | `/togosheets-marketplace/<slug>` | `404.html` (redirige vers `boutique.html?tenant=...`) |
+| Gestion + création de boutiques | `/togosheets-pro/` | dépôt togosheets-pro |
+| Espace employés | `/togosheets-pro/employe.html` | dépôt togosheets-pro |
+
+⚠️ **Ne jamais supprimer `404.html`** : les liens courts générés par togosheets-pro
+(`.../togosheets-marketplace/<slug>`) n'existent pas comme fichiers. GitHub Pages sert `404.html`,
+qui lit le slug dans Firestore (`shop_slugs`) puis redirige vers la bonne boutique.
+Ce fichier n'est pas synchronisé : il n'existe que dans ce dépôt.
