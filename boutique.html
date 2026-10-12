@@ -735,7 +735,7 @@ button:focus,button:focus-visible,a:focus,a:focus-visible{outline:none;box-shado
     <div class="menu-section">
       <div class="menu-item" onclick="window.open('tel:+22899812072')"><i class="fas fa-phone ico green"></i><span class="label">+228 99 81 20 72</span></div>
     </div>
-    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:16px">Propulsé par <strong>AET Technology</strong> • alban3886.github.io</p>
+    <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:16px">Propulsé par <strong>AET Technology</strong> • aet-alban.online</p>
   </div>
 </div>
 
@@ -2354,7 +2354,7 @@ window.doForgot = async () => {
   setMsg('msgForgot', ''); setBusy('btnForgot', true);
   try {
     await sendPasswordResetEmail(auth, email, {
-      url: 'https://alban3886.github.io/togosheets-pro/reset-password.html?back=' + encodeURIComponent(location.origin + location.pathname + location.search),
+      url: 'https://budget.aet-alban.online/reset-password.html?back=' + encodeURIComponent(location.origin + location.pathname + location.search),
       handleCodeInApp: true
     });
   } catch (e) {
