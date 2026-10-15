@@ -656,8 +656,8 @@ body{
 
 <!-- Footer -->
 <div class="footer">
-  Propulsé par <a href="https://alban3886.github.io/togosheets-pro/">AET Technology</a> — Lomé, Togo 🇹🇬<br>
-  <span style="margin-top:4px;display:block">Vous avez une boutique ? <a href="https://alban3886.github.io/togosheets-pro/">Créez la vôtre gratuitement</a></span>
+  Propulsé par <a href="https://budget.aet-alban.online/">AET Technology</a> — Lomé, Togo 🇹🇬<br>
+  <span style="margin-top:4px;display:block">Vous avez une boutique ? <a href="https://budget.aet-alban.online/">Créez la vôtre gratuitement</a></span>
 </div>
 
 <!-- Firebase -->
@@ -985,6 +985,33 @@ window.closeShopDrawer = function(){
 window.closeDrawer = function(e){
   if(e.target === document.getElementById('shopOverlay')) closeShopDrawer();
 };
+
+// aet-back-nav : le bouton retour ferme l'apercu de boutique
+(function(){
+  let popping=false, skipPop=false;
+  const _os=window.openShop, _cs=window.closeShopDrawer, _vs=window.visitShop;
+  const ov=()=>document.getElementById('shopOverlay');
+  const isOpen=()=>!!ov() && ov().classList.contains('open');
+  const st=()=>history.state||{};
+  window.openShop=function(uid, shopId){
+    const was=isOpen();
+    _os(uid, shopId);
+    if(isOpen() && !was && !st().aetShop) history.pushState({aetShop:1},'');
+  };
+  window.closeShopDrawer=function(){
+    _cs();
+    if(!popping && st().aetShop){ skipPop=true; history.back(); }
+  };
+  window.visitShop=function(uid){
+    if(!st().aetShop) return _vs(uid);
+    const base=window.location.origin + window.location.pathname.replace('public.html','');
+    location.replace(base + 'boutique.html?tenant=' + encodeURIComponent(uid));
+  };
+  window.addEventListener('popstate', ()=>{
+    if(skipPop){ skipPop=false; return; }
+    if(isOpen()){ popping=true; try{ _cs(); } finally{ popping=false; } }
+  });
+})();
 
 window.pickCat = function(el){
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
